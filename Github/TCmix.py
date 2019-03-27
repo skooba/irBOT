@@ -63,31 +63,17 @@ dictionary = preprocess_pdfs()
 keys = list(dictionary.keys())
 values = list(dictionary.values())
 
-# 3 classes of training data
 training_data = []
 for i in range(len(keys)):
     training_data.append({"class":keys[i], 'section':values[i]})
-'''
-training_data.append({"class":"greeting", "sentence":"how is your day?"})
-training_data.append({"class":"greeting", "sentence":"good day"})
-training_data.append({"class":"greeting", "sentence":"how is it going today?"})
 
-training_data.append({"class":"goodbye", "sentence":"have a nice day"})
-training_data.append({"class":"goodbye", "sentence":"see you later"})
-training_data.append({"class":"goodbye", "sentence":"have a nice day"})
-training_data.append({"class":"goodbye", "sentence":"talk to you soon"})
-
-training_data.append({"class":"sandwich", "sentence":"make me a sandwich"})
-training_data.append({"class":"sandwich", "sentence":"can you make a sandwich?"})
-training_data.append({"class":"sandwich", "sentence":"having a sandwich today?"})
-training_data.append({"class":"sandwich", "sentence":"what's for lunch?"})
-'''
 print ("%s sentences of training data" % len(training_data))
 
 # capture unique stemmed words in the training corpus
 corpus_words = {}
 class_words = {}
-stop = stopwords.words('english') 
+addtl_stopwords = ['much','sensor']
+stop = stopwords.words('english') + addtl_stopwords
 # turn a list into a set (of unique items) and then a list again (this removes duplicates)
 classes = list(set([a['class'] for a in training_data])) #Loops through the training data storing the classes and keeping the classes by using set(Eliminates duplicates)
 #print('TD IS', training_data)
@@ -120,6 +106,7 @@ print ("Class words: %s" % class_words)
 
 # we can now calculate a score for a new sentence
 sentence = "how much torque should I apply?"
+sentence = sentence.lower()
 
 # calculate a score for a given class taking into account word commonality
 def calculate_class_score_commonality(sentence, class_name, show_details=True):
