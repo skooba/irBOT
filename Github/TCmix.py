@@ -2,14 +2,17 @@ import nltk
 from nltk.corpus import stopwords
 from nltk.stem.lancaster import LancasterStemmer
 from tabula import wrapper
+import pandas as pd
+import numpy as np
 import os
 import csv
 import re
 from collections import OrderedDict
+
 # word stemmer
 stemmer = LancasterStemmer()
-
-
+addtl_stopwords = []
+#'much','sensor'
 
 def preprocess_pdfs():
     pdf_folder = 'data/pdf'
@@ -54,63 +57,56 @@ def preprocess_pdfs():
                 update = {section:re.sub(r'[^A-Z0-9 ]','',' '.join(read_file[section_starts[count]:]).upper())}
             dictionary.update(update)
             count += 1
-        return dictionary
 
+    keys = list(dictionary.keys())
+    values = list(dictionary.values())
 
+    training_data = []
+    for i in range(len(keys)):
+        training_data.append({"class":keys[i], 'section':values[i]})
 
-dictionary = preprocess_pdfs()
-#print('Dict looks like', dictionary.shape)
-keys = list(dictionary.keys())
-values = list(dictionary.values())
+    #print ("%s sentences of training data" % len(training_data))
 
-training_data = []
-for i in range(len(keys)):
-    training_data.append({"class":keys[i], 'section':values[i]})
+    # capture unique stemmed words in the training corpus
+    corpus_words = {}
+    class_words = {}
+    # turn a list into a set (of unique items) and then a list again (this removes duplicates)
+    classes = list(set([a['class'] for a in training_data])) #Loops through the training data storing the classes and keeping the classes by using set(Eliminates duplicates)
+    #print('TD IS', training_data)
 
-print ("%s sentences of training data" % len(training_data))
+    for c in classes:
+        # prepare a list of words within each class
+        class_words[c] = []
 
-# capture unique stemmed words in the training corpus
-corpus_words = {}
-class_words = {}
-addtl_stopwords = ['much','sensor']
-stop = stopwords.words('english') + addtl_stopwords
-# turn a list into a set (of unique items) and then a list again (this removes duplicates)
-classes = list(set([a['class'] for a in training_data])) #Loops through the training data storing the classes and keeping the classes by using set(Eliminates duplicates)
-#print('TD IS', training_data)
-
-for c in classes:
-    # prepare a list of words within each class
-    class_words[c] = []
-
-# loop through each sentence in our training data
-for data in training_data:
-    # tokenize each sentence into words
-    for word in nltk.word_tokenize(data['section']):
-        # ignore a some things
-        if word not in ["?", "'s", "0", "1", "2", "3", "4", "5", "6", "7", "8","9"]:
-            # stem and lowercase each word
-            stemmed_word = stemmer.stem(word.lower())
-            # have we not seen this word already?
-            if stemmed_word not in corpus_words:
-                corpus_words[stemmed_word] = 1
-            else:
-                corpus_words[stemmed_word] += 1
+        # loop through each sentence in our training data
+    for data in training_data:
+        # tokenize each sentence into words
+        for word in nltk.word_tokenize(data['section']):
+            # ignore a some things
+            if word not in ["?", "'s", "0", "1", "2", "3", "4", "5", "6", "7", "8","9"]:
+                # stem and lowercase each word
+                stemmed_word = stemmer.stem(word.lower())
+                # have we not seen this word already?
+                if stemmed_word not in corpus_words:
+                    corpus_words[stemmed_word] = 1
+                else:
+                    corpus_words[stemmed_word] += 1
 
             # add the word to our words in class list
-            class_words[data['class']].extend([stemmed_word])
+                class_words[data['class']].extend([stemmed_word])
+    # we now have each stemmed word and the number of occurances of the word in our training corpus (the word's commonality)
+    #print ("Corpus words and counts: %s \n" % corpus_words)
+    # also we have all words in each class
+    #print ("Class words: %s" % class_words)
+    return class_words, corpus_words
 
-# we now have each stemmed word and the number of occurances of the word in our training corpus (the word's commonality)
-print ("Corpus words and counts: %s \n" % corpus_words)
-# also we have all words in each class
-print ("Class words: %s" % class_words)
 
-# we can now calculate a score for a new sentence
-sentence = "how much torque should I apply?"
-sentence = sentence.lower()
+
 
 # calculate a score for a given class taking into account word commonality
-def calculate_class_score_commonality(sentence, class_name, show_details=True):
+def calculate_class_score_commonality(class_words, corpus_words, sentence, class_name, show_details):
     score = 0.0
+    stop = stopwords.words('english') + addtl_stopwords
     # tokenize each word in our new sentence
     for word in nltk.word_tokenize(sentence):
         if word not in stop:
@@ -121,27 +117,21 @@ def calculate_class_score_commonality(sentence, class_name, show_details=True):
                 #print('classwords is', class_words[class_name])
                 # treat each word with relative weight
                 score += (count / float(corpus_words[stemmer.stem(word.lower())]))
-                print('stem is', stemmer.stem(word.lower()), class_name,  count)
-                print('corpus whatever', corpus_words[stemmer.stem(word.lower())])
+                #print('stem is', stemmer.stem(word.lower()), class_name,  count)
+                #print('corpus whatever', corpus_words[stemmer.stem(word.lower())])
 
                 if show_details:
                     print ("   match: %s (%s)" % (stemmer.stem(word.lower()), count / float(corpus_words[stemmer.stem(word.lower())])))
     return score
 
-# now we can find the class with the highest score
-#print('class words', class_words.keys())
-for c in class_words.keys():
-    #print('c is',c)
-    print ("Class: %s  Score: %s \n" % (c, calculate_class_score_commonality(sentence, c)))
-#print('classwords is', class_words['UTILIZING THE HART COMMUNICATIONS'])
 # return the class with highest score for sentence
-def classify(sentence):
+def classify(sentence,class_words,corpus_words):
     high_class = None
     high_score = 0
     # loop through our classes
     for c in class_words.keys():
         # calculate score of sentence for each class
-        score = calculate_class_score_commonality(sentence, c, show_details=False)
+        score = calculate_class_score_commonality(class_words, corpus_words, sentence, c, show_details=False)
         # keep track of highest score
         if score > high_score:
             high_class = c
@@ -149,8 +139,27 @@ def classify(sentence):
 
     return high_class, high_score
 
+# we can now calculate a score for a new sentence
+def get_target():
+    sentence = "How does the sensor convert pressure to an electrical signal?"
+    sentence = sentence.lower()
+    print(classify("what is the output of my vertex sensor?"))
+
+#or read a list of questions in csv format and save a new csv with questions and classified targets
+def get_targets():
+    class_words, corpus_words = preprocess_pdfs()
+    dataframe = pd.read_csv('training_questions.csv')
+    dataframe.columns = ['question']
+    dataframe['classify'] = pd.Series('str', range(len(dataframe.index)))
+    dataframe['weight'] = pd.Series(np.nan, range(len(dataframe.index)))
+    for i in range(len(dataframe.index)):
+        question = str(dataframe.iloc[i]['question'])
+        question = str(question).lower()
+        [clas, weight] = classify(question,class_words,corpus_words)
+        dataframe.at[i,'classify'] = clas
+        dataframe.at[i, 'weight'] = weight
+    print(dataframe)
+    dataframe.to_csv(str('training_questions_w_targets.csv'),index=False)
 
 
-
-#print(classify("what is the output of my vertex sensor?"))
-
+get_targets()
