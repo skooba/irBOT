@@ -90,8 +90,8 @@ def preprocess_pdfs():
     #print ("Corpus words and counts: %s \n" % corpus_words)
     # also we have all words in each class
     #print ("Class words: %s" % class_words)
-    np.save('class_words',class_words)
-    np.save('corpus_words', corpus_words)
+    #np.save('class_words',class_words)
+    #np.save('corpus_words', corpus_words)
     np.save('training_data', training_data)
     return class_words, corpus_words
 
@@ -102,7 +102,7 @@ def calculate_class_score_commonality(class_words, corpus_words, sentence, class
     # tokenize each word in our new sentence
     for word in nltk.word_tokenize(sentence):
         if word not in stop:
-            print(stemmer.stem(word.lower()))
+            #print(stemmer.stem(word.lower()))
         # check to see if the stem of the word is in any of our classes
             if stemmer.stem(word.lower()) in class_words[class_name]:
                 count = class_words[class_name].count(stemmer.stem(word.lower()))
@@ -141,17 +141,21 @@ def get_target():
 #or read a list of questions in csv format and save a new csv with questions and classified targets
 def get_targets():
     class_words, corpus_words = preprocess_pdfs()
-    dataframe = pd.read_csv('training_questions.csv')
-    dataframe.columns = ['question']
+    dataframe = pd.read_csv('training_data_w_labels.csv')
+    dataframe.columns = ['question','section']
     dataframe['classify'] = pd.Series('str', range(len(dataframe.index)))
-    dataframe['weight'] = pd.Series(np.nan, range(len(dataframe.index)))
+    #dataframe['weight'] = pd.Series(np.nan, range(len(dataframe.index)))
     for i in range(len(dataframe.index)):
         question = str(dataframe.iloc[i]['question'])
         [clas, weight] = classify(question,class_words,corpus_words)
         dataframe.at[i,'classify'] = clas
-        dataframe.at[i, 'weight'] = weight
-    print(dataframe)
-    dataframe.to_csv(str('training_questions_w_targets.csv'),index=False)
+        #dataframe.at[i, 'weight'] = weight
+    dataframe.to_csv(str('training_data_predictions.csv'),index=False)
+    return dataframe
 
+predicted_dataframe = get_targets()
 
-get_targets()
+correct = sum(predicted_dataframe['classify']==predicted_dataframe['section'])
+[total,_] = predicted_dataframe.shape
+accuracy = correct/total
+print(accuracy)
