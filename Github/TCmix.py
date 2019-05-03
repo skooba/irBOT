@@ -53,19 +53,19 @@ def preprocess_pdfs():
                 #between the first and last line of table of contents exists
                 #section titles and page numbers, loop through these
         for section in read_file[start_contents-1:end_contents]:
-            #get rid of page numbers to leave only section titles
+            #get rid of non alphanumeric characters for section titles
             text = re.sub('[\W]+','', section).rstrip('0123456789').upper()
             count = end_contents-1
             #look through each line in the PDF starting after the TOC
             for line in read_file[end_contents:]:
                 count += 1
-                #if a line exists with only the section title then it is the
-                #beginning of the section
-                if text == re.sub('[\W]','', line).upper():
+                #check if each line of code matches the section title
+                if text == re.sub('[\W]','', line).rstrip('0123456789').upper():
                     #dictionary takes from {section names: section line starts}
-                    dictionary[
-                    re.sub(r'\t|[0-9]\s*','',read_file[count])
-                    ] = count
+                    dictionary[re.sub(
+                    r'\t|[0-9]\s*','',read_file[count]
+                    )] = count
+                    print(dictionary)
         #form a list of the line numbers where each section starts in the PDF
         section_starts = list(dictionary.values())
         count = 0
@@ -75,7 +75,7 @@ def preprocess_pdfs():
             if count < len(section_starts)-2:
                 #update the dictionary value to be the contents between the
                 #section title of the current loop and the next section title
-                update = {section:re.sub(r'[^A-Z0-9 ]','',' '.join(
+                update = {section:re.sub(r'([^\s\w]|_)+','',' '.join(
                 read_file[section_starts[count]+1:section_starts[count+1]]
                 ).upper())}
             #if this is the final section of the PDF
@@ -83,7 +83,7 @@ def preprocess_pdfs():
                 #update the final dictionary value to be the contents after the
                 #last section title all the way to the end of the PDF
                 update = {section:re.sub(
-                r'[^A-Z0-9 ]','',' '.join(read_file[section_starts[count]:]
+                r'([^\s\w]|_)+','',' '.join(read_file[section_starts[count]:]
                 ).upper())}
             dictionary.update(update)
             count += 1
@@ -95,7 +95,9 @@ def preprocess_pdfs():
         #create a data structure for all the contents in the PDF
         training_data.append({"class":keys[i], 'section':values[i]})
     #save the data structure so we can call this into the Doc2Vec algorthim
+    #print(training_data)
     np.save('training_data', training_data)
+    print(training_data)
     # capture unique stemmed words in the training corpus
     corpus_words = {}
     class_words = {}
@@ -192,6 +194,7 @@ predicted_dataframe = get_targets('training_data_w_labels.csv')
 correct = sum(predicted_dataframe['classify']==predicted_dataframe['section'])
 #find how many questions are in training_data_w_labels
 [total,_] = predicted_dataframe.shape
+print(total)
 #calculate the accuracy
 accuracy = correct/total
 print(accuracy)
