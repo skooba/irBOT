@@ -65,7 +65,6 @@ def preprocess_pdfs():
                     dictionary[re.sub(
                     r'\t|[0-9]\s*','',read_file[count]
                     )] = count
-                    print(dictionary)
         #form a list of the line numbers where each section starts in the PDF
         section_starts = list(dictionary.values())
         count = 0
@@ -95,9 +94,7 @@ def preprocess_pdfs():
         #create a data structure for all the contents in the PDF
         training_data.append({"class":keys[i], 'section':values[i]})
     #save the data structure so we can call this into the Doc2Vec algorthim
-    #print(training_data)
     np.save('training_data', training_data)
-    print(training_data)
     # capture unique stemmed words in the training corpus
     corpus_words = {}
     class_words = {}
@@ -194,7 +191,6 @@ predicted_dataframe = get_targets('training_data_w_labels.csv')
 correct = sum(predicted_dataframe['classify']==predicted_dataframe['section'])
 #find how many questions are in training_data_w_labels
 [total,_] = predicted_dataframe.shape
-print(total)
 #calculate the accuracy
 accuracy = correct/total
-print(accuracy)
+print('accuracy is ' + str(accuracy))
