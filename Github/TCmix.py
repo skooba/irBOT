@@ -173,10 +173,9 @@ def get_target(sentence):
 #csv with questions and classified targets
 def get_targets(csv):
     class_words, corpus_words = preprocess_pdfs()
-    dataframe = pd.read_csv(csv)
+    dataframe = pd.read_csv('training_data_w_labels.csv')
     dataframe.columns = ['question','section']
     dataframe['classify'] = pd.Series('str', range(len(dataframe.index)))
-    #dataframe['weight'] = pd.Series(np.nan, range(len(dataframe.index)))
     for i in range(len(dataframe.index)):
         question = str(dataframe.iloc[i]['question'])
         [clas, weight] = classify(question,class_words,corpus_words)
@@ -185,12 +184,14 @@ def get_targets(csv):
     dataframe.to_csv(str('training_data_predictions.csv'),index=False)
     return dataframe
 
-predicted_dataframe = get_targets('training_data_w_labels.csv')
+predicted_dataframe = get_targets('training_data_predictions.csv')
 #training_data_w_labels is labeled data, sum over the number of predictions
 #that match the labels
 correct = sum(predicted_dataframe['classify']==predicted_dataframe['section'])
+print(correct)
 #find how many questions are in training_data_w_labels
 [total,_] = predicted_dataframe.shape
+print(total)
 #calculate the accuracy
-accuracy = correct/total
+accuracy = float(correct)/float(total)
 print('accuracy is ' + str(accuracy))
