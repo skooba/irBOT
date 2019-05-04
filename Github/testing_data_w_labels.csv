@@ -1,0 +1,97 @@
+question,section
+What other equipment can I buy with the sensor?,ACCESSORIES
+Can I buy metal orings for my sensor?,ACCESSORIES
+Can I buy a replacement mounting bracket for my sensor?,ACCESSORIES
+Where can I get a plug for my port?,ACCESSORIES
+Is there a kit to clean my mounting hole kit?,ACCESSORIES
+What is the part number for the 1/2-20 gauge plug,ACCESSORIES
+What is the part number for the mounting hole cleaning tool kit,ACCESSORIES
+Can I buy an IP67 rated mating connector?,ACCESSORIES
+Where can I find the declaration of conformity?,APPROVALS/CERTIFICATES
+Where is the examination certificate?,APPROVALS/CERTIFICATES
+Should I rezero my sensor?,COMMISSIONING
+How do I use my zero and span pots?,COMMISSIONING
+Can I operate the sensor at low temperature?,COMMISSIONING
+What type of temperature sensors can I get?,COMMISSIONING
+What is the purpose of RCAL?,COMMISSIONING
+How do I adjust the zero and span of my sensor?,COMMISSIONING
+What can I do if my sensor isn't reading the correct span?,COMMISSIONING
+Can my sensor be damaged by cold starts?,COMMISSIONING
+What is the default Rcal setting?,COMMISSIONING
+How do I contact Dynisco?,DYNISCO CONTACT INFORMATION
+What is Dynisco's contact information?,DYNISCO CONTACT INFORMATION
+What do the warning symbols mean on my sensor?,GENERAL
+What does URV stand for?,GENERAL
+What does LRV stand for?,GENERAL
+How does the mechanical components of the sensor work?,GENERAL
+How does the sensor convert pressure to an electrical signal?,GENERAL
+Which type of thermocouples can I get with my sensor?,GENERAL
+What is the default Rcal setting?,GENERAL
+Why are my threads off colored?,INSTALLATION AND REMOVAL
+What is my diaphragm coated with?,INSTALLATION AND REMOVAL
+How do I protect the tip of my sensor?,INSTALLATION AND REMOVAL
+How do I clean the mounting hole?,INSTALLATION AND REMOVAL
+How do create a mounting port?,INSTALLATION AND REMOVAL
+Why is the tip of my sensor dirty when I received it?,INSTALLATION AND REMOVAL
+What mounting hole should I use to install my sensor?,INSTALLATION AND REMOVAL
+How do I ensure that my mounting hole is machined right before installation?,INSTALLATION AND REMOVAL
+Where is the ideal location to install in process?,INSTALLATION AND REMOVAL
+How much will the electronics housing heat up?,INSTALLATION AND REMOVAL
+What are the pin assignments for the connector,INSTALLATION AND REMOVAL
+Where can I have my sensor recalibrated?,MAINTENANCE
+How do I dispose of my vertex sensor?,MAINTENANCE
+Is my sensor under warranty?,MAINTENANCE
+Can I send my sensor back on an RMA?,MAINTENANCE
+How often does my sensor have to be recalibrated?,MAINTENANCE
+How do you make the electrical connections of the pt?,NOTES ON SAFETY
+How do I connect my ATEX approved device?,NOTES ON SAFETY
+Where do I shield my transducer to ground?,NOTES ON SAFETY
+How do I safely install the device?,NOTES ON SAFETY
+What is the manufacturers address?,NOTES ON SAFETY
+What directive should I follow for explosive atmosphere installation?,NOTES ON SAFETY
+Is my sensor explosion proof?,NOTES ON SAFETY
+Are there any special precautions I must take when installing my sensor in an explosion proof environment?,NOTES ON SAFETY
+Can I have a drawing for my sensor?,OUTLINE DRAWINGS
+What is the accuracy of the sensor?,TECHNICAL DATA
+What is the resolution of the sensor?,TECHNICAL DATA
+What is the safe overload pressure of the sensor?,TECHNICAL DATA
+What is the burst pressure?,TECHNICAL DATA
+What is the response time?,TECHNICAL DATA
+What electrical outputs are available for the Vertex sensor?,TECHNICAL DATA
+What is the recommended supply voltage for my mA sensor?,TECHNICAL DATA
+What is the recommended installation torque?,TECHNICAL DATA
+What is the maximum temperature that my sensor can withstand?,TECHNICAL DATA
+Is there an positional effect on my sensors accuracy?,TECHNICAL DATA
+Will my sensor shift due to temperature?,TECHNICAL DATA
+What material is my sensor's diaphragm made from?,TECHNICAL DATA
+What material is the wetted parts of my sensor made from?,TECHNICAL DATA
+What is the IP rating form my sensor?,TECHNICAL DATA
+How much does my sensor weigh?,TECHNICAL DATA
+What are the dimensions of my sensor?,TECHNICAL DATA
+How should I transport the sensor?,TRANSPORT/DELIVERY/STORAGE
+What are the safety precautions I should consider when transporting the sensor?,TRANSPORT/DELIVERY/STORAGE
+What is a safe environment to store my sensor?,TRANSPORT/DELIVERY/STORAGE
+Where can I get the latest version of the operating manual?,TRANSPORT/DELIVERY/STORAGE
+Can my sensor be damaged by electrostatic discharge?,TRANSPORT/DELIVERY/STORAGE
+Why didn't my sensor come with a mounting bracket?,TRANSPORT/DELIVERY/STORAGE
+What is the cap on my sensor made of?,TRANSPORT/DELIVERY/STORAGE
+What are best practices for storing my sensor?,TRANSPORT/DELIVERY/STORAGE
+What do I do if I have a zero reading on my mA sensor?,TROUBLESHOOTING
+What do I do if my PV reading is low?,TROUBLESHOOTING
+What do I do if my pressure variable reading is high?,TROUBLESHOOTING
+My sensor is reading air temperature not process temperature,TROUBLESHOOTING
+Can I have a diagram to connect Power to HART communication?,UTILIZING THE HART COMMUNICATIONS
+Can you measure current directly using HART communicator? ,UTILIZING THE HART COMMUNICATIONS
+How do I communicate my handheld HART device to my sensor?,UTILIZING THE HART COMMUNICATIONS
+How do I activate RCAL with HART?,UTILIZING THE HART COMMUNICATIONS
+Do I have to take extra precautions when operating HART in an explosive atmosphere?,UTILIZING THE HART COMMUNICATIONS
+Can I deactivate my zero and span actuations?,UTILIZING THE HART COMMUNICATIONS
+When is the my sensor driven into failsafe mode?,UTILIZING THE HART COMMUNICATIONS
+What is the failsafe output?,UTILIZING THE HART COMMUNICATIONS
+Does my sensor failsafe at high or low voltage?,UTILIZING THE HART COMMUNICATIONS
+What is the key sequence to perform lower sensor trim with the HART communicator?,UTILIZING THE HART COMMUNICATIONS
+Should I take precaution when torqueing my sensor?,VERTEX CARE ANDHANDLING
+What do I use to clean the diaphragm?,VERTEX CARE ANDHANDLING
+Should I adjust the zero after bringing my machine to temperature?,VERTEX CARE ANDHANDLING
+How do I reduce the zero shift of my sensor?,VERTEX CARE ANDHANDLING
+How do I clean plastic off of my sensor?,VERTEX CARE ANDHANDLING
