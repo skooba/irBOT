@@ -10,7 +10,6 @@ from sklearn import utils
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, confusion_matrix
 from sklearn.metrics import classification_report
-from nltk.tokenize import word_tokenize
 from tqdm import tqdm
 import numpy as np
 import pandas as pd
