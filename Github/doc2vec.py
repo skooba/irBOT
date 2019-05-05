@@ -90,7 +90,7 @@ for ac in range(10):
     #read labeled question file to classify into a dataframe
     #csv file has columns labeled 'question' and 'section'
     dataframe = pd.read_csv(
-    'training_data_w_labels.csv',  error_bad_lines=False
+    'testing_data_w_labels.csv',  error_bad_lines=False
     )
     #lower case the question column lowercase and strip ' and ?
     dataframe['question'] = list(
