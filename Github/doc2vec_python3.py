@@ -10,6 +10,7 @@ from sklearn import utils
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, confusion_matrix
 from sklearn.metrics import classification_report
+from nltk.tokenize import word_tokenize
 from tqdm import tqdm
 import numpy as np
 import pandas as pd
@@ -17,7 +18,7 @@ from sklearn.model_selection import train_test_split
 
 #PARAMETERS
 #number to times to run through the algorthim
-iterations = 10
+iterations = 1
 #number of words to split document into
 n = 4
 #doc2vec function parameters
@@ -86,7 +87,7 @@ def get_vectors(model, corpus_size, vectors_size, vectors_type):
 #initialize a vector for acccuracy which will replace a 0 for every iteration
 accVector = [0]*iterations
 #save the accuracies over iterations
-for ac in range(10):
+for ac in range(iterations):
     #read labeled question file to classify into a dataframe
     #csv file has columns labeled 'question' and 'section'
     dataframe = pd.read_csv(
@@ -173,5 +174,5 @@ for ac in range(10):
     print('accuracy %s' % accuracy_score(y_pred, y_test))
     print(classification_report(y_test, y_pred))
     accVector[ac] = accuracy_score(y_pred, y_test)
-print((sum(accVector)/10))
+print((sum(accVector)/iterations))
 predictions.to_csv(str('10_predictions'),index = False)
